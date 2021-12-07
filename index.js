@@ -9,8 +9,8 @@ function debounce(debouncedFunc, delay) {
   console.log('Debounced call');
   let timeout;
 
-  return function () {
-    console.log('Returned annonymous funcion');
+  return function (x) {
+    console.log('Returned annonymous function');
     let self = this;
     let args = arguments;
 
@@ -24,23 +24,26 @@ function debounce(debouncedFunc, delay) {
 
 let callsCounter = 0;
 
-let debounced = debounce(() => {
+let debounced = debounce((x) => {
   callsCounter++;
-  appDiv.innerHTML = `<h1>Debounced ${callsCounter}</h1>`;
+  appDiv.innerHTML = `<h1>Debounced ${callsCounter} : ${x}</h1>`;
 }, 3000);
 
-// Many calls
+// Many calls debounced
 debounced();
 debounced();
 debounced();
+
 // Delay this to have a second call
 setTimeout(function () {
   debounced();
-}, 4000);
-// Those will be debounced
+  debounced();
+  // This will be called second
+  debounced(222);
+}, 5000);
+
+// Those will be debounced too
 debounced();
 debounced();
-debounced();
-debounced();
-debounced();
-debounced();
+// This will be called first
+debounced(111);
